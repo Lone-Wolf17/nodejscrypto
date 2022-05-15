@@ -1,0 +1,20 @@
+{
+  "name": "nodejscrypto",
+  "version": "1.0.0",
+  "description": "Crypto / Blockchain Node Api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Cryto",
+    "Blockchain",
+    "NodeJS",
+    "Typescript"
+  ],
+  "author": "Lone Wolf",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  }
+}
