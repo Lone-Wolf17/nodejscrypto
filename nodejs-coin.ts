@@ -1,9 +1,17 @@
 //import secure hash algorithm from the crypto-js package
-const SHA256 = require("crypto-js/sha256");
+
+import {SHA256} from 'crypto-js';
 
 // Create a Javascript class to represent a block
 class Block {
-    constructor(index, timestamp, data, previousHash) {
+
+    index: number;
+    timestamp: string;
+    data: any;
+    previousHash?: string;
+    hash: string;
+
+    constructor(index : number, timestamp : string, data : any, previousHash?: string) {
         this.index = index;
         this.timestamp = timestamp;
         this.data = data;
@@ -11,43 +19,46 @@ class Block {
         this.hash = this.generateHash();
     }
 
-    generateHash() {
+    generateHash():string {
         return SHA256(this.index + this.timestamp + this.previousHash + JSON.stringify(this.data)).toString();
     }
 }
 
 class BlockChain {
+
+    blockChain: Block[];
+
     constructor() {
         this.blockChain = [this.createGenesisBlock()];
     }
 
-    createGenesisBlock() {
+    createGenesisBlock() : Block {
         return new Block(0, "11/04/2022", "first block on the chain", "0");
     }
 
-    getTheLatestBlock() {
+    getTheLatestBlock():Block {
         return this.blockChain[this.blockChain.length -1];
     }
 
-    addNewBlock(newBlock) {
+    addNewBlock(newBlock : Block): void {
         newBlock.previousHash = this.getTheLatestBlock().hash;
         newBlock.hash = newBlock.generateHash();
         this.blockChain.push(newBlock);
     }
 
     // testing the integrity of the chain
-    validateChainIntegrity() {
+    validateChainIntegrity() : boolean {
         for (let i=1; i<this.blockChain.length; i++) {
-            const conrrentBlock = this.blockChain[i];
+            const currentBlock = this.blockChain[i];
             const previousBlock = this.blockChain[i-1];
-            if (conrrentBlock.hash !== currentBlock.generateHash()) {
+            if (currentBlock.hash !== currentBlock.generateHash()) {
                 return false;
             }
-            if (conrrentBlock.previousHash !== previousBlock.hash) {
+            if (currentBlock.previousHash !== previousBlock.hash) {
                 return false;
             }
-            return true;
         }
+        return true;
     }
 }
 
